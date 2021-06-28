@@ -1,14 +1,8 @@
 var express=require('express')
-var ejs=require('ejs')
-
 var app=express()
-var qs=require('querystring')
-var path=require('path')
 var port=3000
 var mysql = require('mysql')
-var create_process=require('./routers/create_process')
 
-const { error } = require('console')
 var db = mysql.createConnection({
   host:'localhost',
   user:'root',
@@ -67,7 +61,7 @@ app.get('/',function(req,res){
               </div>
           </div>
       ` 
-    portfolio=portfolio + `<div class="col-md-6 col-lg-4 mb-5">
+     portfolio=portfolio + `<div class="col-md-6 col-lg-4 mb-5">
         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal${portfolio_item[i].id}">
                 <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                     <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
@@ -75,7 +69,7 @@ app.get('/',function(req,res){
                 <img class="img-fluid" src="/assets/img/portfolio/cabin.png" title="cabin" alt="..." />
             </div>
         </div>
-    `
+      `
       console.log('portfoliomodal : '+portfolio_item[i].id)
       console.log('portfolio_item'+i+'.id = '+ portfolio_item[i].id)
       console.log('portfolio_item'+i+'.title = '+ portfolio_item[i].title)
@@ -92,42 +86,17 @@ app.get('/',function(req,res){
     })
   })
 })
-app.get('/create',function(req,res){
-    db.query(`SELECT * FROM portfolio_item`, function(error,portfolio_item){
-        res.render('create.ejs',{
-        
-        })
-        
-    })
-      
+app.post('/create',function(req,res){
+        res.render('create.ejs',{})
 })
-
-app.get('/create_process',function(request,response){
-    var body = ''
-    request.on('data', function(data){
-        body = body + data;
-    })
-    request.on('end', function(){
-        var post = qs.parse(body)
-        db.query(`
-          INSERT INTO portfolio_item (title, description) 
-            VALUES(?, ?`,
-          [post.title, post.description], 
-          function(error, result){
-            if(error){
-              throw error;
-            }
-          
-          }
-        )
-    });
+app.post('/create_process',function(req,res){
+    var title=req.body.title
+    var description=req.body.description
+     db.query(`INSERT INTO portfolio_item (title, description) 
+     VALUES(?, ?)`,[title,description])
+     res.redirect('/')
 })
-
-    
-       
-       
-      
-          
+  
         
 app.listen(port)
 console.log('server start : 3000')
