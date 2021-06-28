@@ -3,7 +3,8 @@ var ejs=require('ejs')
 var qs = require('querystring');
 var app=express()
 var port=3000
-var mysql = require('mysql')
+var mysql = require('mysql');
+const { error } = require('console');
 var db = mysql.createConnection({
   host:'localhost',
   user:'root',
@@ -93,23 +94,22 @@ app.get('/create',function(req,res){
     })
       
 })
-app.get('/create_process',function(req,res){       
-        var body = ''
-        req.on('data', function(data){
-            body = body + data
-        })
-        req.on('end', function(){
-            var post = qs.parse(body);
-            db.query(`INSERT INTO portfolio_item (title, description) VALUES(?, ?)`,[post.title, post.description], 
-              function(error, result){
-                if(error){
-                  throw error
-                }
-                res.render('index.ejs',{ 
+app.get('/create_process',function(req,res){ 
+    app.get('/create.ejs',function(req,res){
+        var title=req.title
+        var description=req.description
+        console.log(title, description)
+        db.query(`INSERT INTO portfolio_item (title, description) VALUES(?, ?)`,[title, description],
+        function(err,result){
+           
+            res.render('index.ejs',{ 
 
-                })
-              })
+            })
+            
         })
+    })     
+    
+        
 })
 app.listen(port)
 console.log('server start : 3000')
