@@ -105,7 +105,7 @@ app.get('/create_process',function(req,res){
                 if(error){
                   throw error
                 }
-                res.render('index.ejs',{
+                res.render('index.ejs',{ 
 
                 })
               })
