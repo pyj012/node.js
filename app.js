@@ -1,10 +1,13 @@
 var express=require('express')
 var ejs=require('ejs')
-var qs = require('querystring');
 var app=express()
 var port=3000
-var mysql = require('mysql');
-const { error } = require('console');
+var mysql = require('mysql')
+var create_process=require('./routers/create_process')
+
+
+
+const { error } = require('console')
 var db = mysql.createConnection({
   host:'localhost',
   user:'root',
@@ -15,6 +18,9 @@ var db = mysql.createConnection({
 app.set('view engine','ejs')
 app.set('views',__dirname+'/views')
 app.use(express.static(__dirname+'/public'))
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+
 app.get('/',function(req,res){
     db.query(`SELECT * FROM portfolio_item`, function(error,portfolio_item){
     var title=`박영준의 포트폴리오`
@@ -89,27 +95,20 @@ app.get('/create',function(req,res){
     db.query(`SELECT * FROM portfolio_item`, function(error,portfolio_item){
         res.render('create.ejs',{
             
+            
         })
         
     })
       
 })
-app.get('/create_process',function(req,res){ 
-    app.get('/create.ejs',function(req,res){
-        var title=req.title
-        var description=req.description
-        console.log(title, description)
-        db.query(`INSERT INTO portfolio_item (title, description) VALUES(?, ?)`,[title, description],
-        function(err,result){
-           
-            res.render('index.ejs',{ 
 
-            })
-            
-        })
-    })     
+app.use('/create_process',create_process)
+
     
+       
+       
+      
+          
         
-})
 app.listen(port)
 console.log('server start : 3000')
