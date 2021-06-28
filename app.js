@@ -1,5 +1,6 @@
 var express=require('express')
 var ejs=require('ejs')
+var qs = require('querystring');
 var app=express()
 var port=3000
 var mysql = require('mysql')
@@ -9,7 +10,6 @@ var db = mysql.createConnection({
   password:'qkrdudwns1',
   database:'portfolio'
 })
-
 
 app.set('view engine','ejs')
 app.set('views',__dirname+'/views')
@@ -27,7 +27,6 @@ app.get('/',function(req,res){
     var n = 0
     while(i < portfolio_item.length)
     {
-       
      list = list + `<div class="portfolio-modal modal fade" id="portfolioModal${portfolio_item[i].id}" tabindex="-1" aria-labelledby="portfolioModal1" aria-hidden="true">
       <div class="modal-dialog modal-xl">
           <div class="modal-content">
@@ -84,6 +83,33 @@ app.get('/',function(req,res){
         h2:head2
     })
   })
+})
+app.get('/create',function(req,res){
+    db.query(`SELECT * FROM portfolio_item`, function(error,portfolio_item){
+        res.render('create.ejs',{
+            
+        })
+        
+    })
+      
+})
+app.get('/create_process',function(req,res){       
+        var body = ''
+        req.on('data', function(data){
+            body = body + data
+        })
+        req.on('end', function(){
+            var post = qs.parse(body);
+            db.query(`INSERT INTO portfolio_item (title, description) VALUES(?, ?)`,[post.title, post.description], 
+              function(error, result){
+                if(error){
+                  throw error
+                }
+                res.render('index.ejs',{
+
+                })
+              })
+        })
 })
 app.listen(port)
 console.log('server start : 3000')
