@@ -1,11 +1,12 @@
 var express=require('express')
 var ejs=require('ejs')
+
 var app=express()
+var qs=require('querystring')
+var path=require('path')
 var port=3000
 var mysql = require('mysql')
 var create_process=require('./routers/create_process')
-
-
 
 const { error } = require('console')
 var db = mysql.createConnection({
@@ -94,15 +95,33 @@ app.get('/',function(req,res){
 app.get('/create',function(req,res){
     db.query(`SELECT * FROM portfolio_item`, function(error,portfolio_item){
         res.render('create.ejs',{
-            
-            
+        
         })
         
     })
       
 })
 
-app.use('/create_process',create_process)
+app.get('/create_process',function(request,response){
+    var body = ''
+    request.on('data', function(data){
+        body = body + data;
+    })
+    request.on('end', function(){
+        var post = qs.parse(body)
+        db.query(`
+          INSERT INTO portfolio_item (title, description) 
+            VALUES(?, ?`,
+          [post.title, post.description], 
+          function(error, result){
+            if(error){
+              throw error;
+            }
+          
+          }
+        )
+    });
+})
 
     
        
