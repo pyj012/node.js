@@ -101,14 +101,30 @@ app.post('/create_process',function(req,res){
      res.redirect('/')
 })
 app.get('/update',function(req,res){
-    var title=db.query(`SELECT title FROM portfolio_item WHERE id=1`)
-    var description=db.query(`SELECT description FROM portfolio_item WHERE id=1`)
-    console.log(title)
-    console.log(description)
+    // var title=db.query(`SELECT title FROM portfolio_item WHERE id=1`)
+    // var description=db.query(`SELECT description FROM portfolio_item WHERE id=1`)
+
+    var title =''
+    var description = ''
     
-    res.render('update.ejs',{
-        title:title,
-        description:description
+    db.query('SELECT * from portfolio_item WHERE id=1', function(err, result, fields){
+        if(err) {
+            console.log(err);
+        }
+        else {
+            title = result[0].title
+            description = result[0].description
+        }
+
+        console.log(result)
+        console.log(title)
+        console.log(description)
+    
+        
+        res.render('update.ejs',{
+            title:title,
+            description:description
+        })
     })
 })
         
