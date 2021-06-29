@@ -48,7 +48,14 @@
     scroll-behavior: smooth;
   }
 }
-
+.nofont{
+  text-decoration: none;
+  color:#fff;
+}
+.nofont:hover{
+  text-decoration: none;
+  color:#fff;
+}
 body {
   margin: 0;
   font-family: var(--bs-font-sans-serif);
@@ -6282,6 +6289,13 @@ textarea.form-control-lg {
 
 .align-top {
   vertical-align: top !important;
+}
+
+.mid{
+  width:auto;
+  padding-bottom:1.5em;
+  margin:0 auto;
+  
 }
 
 .align-middle {

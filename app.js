@@ -51,7 +51,11 @@ app.get('/',function(req,res){
                               <p class="mb-4">${portfolio_item[i].description}</p>
                               <button class="btn btn-primary" href="#!" data-bs-dismiss="modal">
                                   <i class="fas fa-times fa-fw"></i>
-                                  Close Window
+                                  닫기
+                              </button>
+                              <button class="btn btn-primary">
+                              <i class="fas fa-times fa-fw"></i>
+                               <a class="nofont" href="/update">수정하기</a>
                               </button>
                                   </div>
                               </div>
@@ -75,7 +79,7 @@ app.get('/',function(req,res){
       console.log('portfolio_item'+i+'.title = '+ portfolio_item[i].title)
       console.log('portfolio_item'+i+'.description = '+portfolio_item[i].description)
       i = i+1
-    }
+}
     
     res.render('index.ejs',{
         list:list,
@@ -96,7 +100,17 @@ app.post('/create_process',function(req,res){
      VALUES(?, ?)`,[title,description])
      res.redirect('/')
 })
-  
+app.get('/update',function(req,res){
+    var title=db.query(`SELECT title FROM portfolio_item WHERE id=1`)
+    var description=db.query(`SELECT description FROM portfolio_item WHERE id=1`)
+    console.log(title)
+    console.log(description)
+    
+    res.render('update.ejs',{
+        title:title,
+        description:description
+    })
+})
         
 app.listen(port)
 console.log('server start : 3000')
