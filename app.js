@@ -1,7 +1,11 @@
+const { query } = require('express')
 var express=require('express')
 var app=express()
 var port=3000
+var url = require('url');
 var mysql = require('mysql')
+var querystring=require('querystring')
+var bodyParser=require('body-parser')
 
 var db = mysql.createConnection({
   host:'localhost',
@@ -26,7 +30,7 @@ app.get('/',function(req,res){
     var list =''
     var i = 0
     var portfolio=''
-    var n = 0
+    var n = 1
     while(i < portfolio_item.length)
     {
      list = list + `<div class="portfolio-modal modal fade" id="portfolioModal${portfolio_item[i].id}" tabindex="-1" aria-labelledby="portfolioModal1" aria-hidden="true">
@@ -55,7 +59,7 @@ app.get('/',function(req,res){
                               </button>
                               <button class="btn btn-primary">
                               <i class="fas fa-times fa-fw"></i>
-                               <a class="nofont" href="/update">수정하기</a>
+                               <a class="nofont" href="/update?id=${n}">수정하기</a>
                               </button>
                                   </div>
                               </div>
@@ -79,7 +83,10 @@ app.get('/',function(req,res){
       console.log('portfolio_item'+i+'.title = '+ portfolio_item[i].title)
       console.log('portfolio_item'+i+'.description = '+portfolio_item[i].description)
       i = i+1
-}
+
+        n=n+1   
+            
+    }
     
     res.render('index.ejs',{
         list:list,
@@ -88,7 +95,29 @@ app.get('/',function(req,res){
         h1:head1,
         h2:head2
     })
+    
   })
+  app.get('/update',function(req,res){
+    var _url = url.parse(req.url, true)
+    var queryData =_url.query
+    var title =''
+    var description = ''
+    console.log(queryData.id)
+    db.query('SELECT * from portfolio_item WHERE id=?',[queryData.id],function(err, result, fields){
+        if(err) {
+            console.log(err)
+            console.log(queryData.id)
+        }
+        else {
+            title = result[0].title
+            description = result[0].description
+        }
+        res.render('update.ejs',{
+            title:title,
+            description:description
+        })
+    })
+})
 })
 app.post('/create',function(req,res){
         res.render('create.ejs',{})
@@ -100,33 +129,6 @@ app.post('/create_process',function(req,res){
      VALUES(?, ?)`,[title,description])
      res.redirect('/')
 })
-app.get('/update',function(req,res){
-    // var title=db.query(`SELECT title FROM portfolio_item WHERE id=1`)
-    // var description=db.query(`SELECT description FROM portfolio_item WHERE id=1`)
 
-    var title =''
-    var description = ''
-    
-    db.query('SELECT * from portfolio_item WHERE id=1', function(err, result, fields){
-        if(err) {
-            console.log(err);
-        }
-        else {
-            title = result[0].title
-            description = result[0].description
-        }
-
-        console.log(result)
-        console.log(title)
-        console.log(description)
-    
-        
-        res.render('update.ejs',{
-            title:title,
-            description:description
-        })
-    })
-})
-        
 app.listen(port)
 console.log('server start : 3000')

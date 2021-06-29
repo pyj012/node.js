@@ -6292,9 +6292,11 @@ textarea.form-control-lg {
 }
 
 .mid{
-  width:auto;
+  
   padding-bottom:1.5em;
-  margin:0 auto;
+  margin: 0 auto;
+  width: 78px;
+  display: block;
   
 }
 
