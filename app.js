@@ -90,39 +90,43 @@ app.get('/',function(req,res){
             h2:head2
         })
     })
-    app.get('/update',function(req,res){
-        var _url = url.parse(req.url, true)
-        var queryData =_url.query
-        var title =''
-        var description = ''
-        var id=queryData.id
-        db.query('SELECT * from portfolio_item WHERE id=?',[queryData.id],function(err, result, fields){
-            if(err) {
-                console.log(err)
-            }
-            else {
-                title = result[0].title
-                description = result[0].description
-            }
-            res.render('update.ejs',{
-                title:title,
-                description:description,
-                id:id
-            })
-        })
-     })
-    app.post('/update_process',function(req,res){
-        var data=req.body.id
-        var title=req.body.title
-        var description=req.body.description
-        console.log('update:'+data)
-         db.query(`UPDATE portfolio_item SET title=?, description=? WHERE id=?`,[title,description,data])
-         res.redirect('/')
-    })
 })
+
+app.get('/update',function(req,res){
+    // var _url = url.parse(req.url, true)
+    // var queryData =_url.query
+    var title =''
+    var description = ''
+    var id=req.query.id
+    db.query('SELECT * from portfolio_item WHERE id=?',[id],function(err, result, fields){
+        if(err) {
+            console.log(err)
+        }
+        else {
+            title = result[0].title
+            description = result[0].description
+        }
+        res.render('update.ejs',{
+            title:title,
+            description:description,
+            id:id
+        })
+    })
+ })
+
+app.post('/update_process',function(req,res){
+    var data=req.body.id
+    var title=req.body.title
+    var description=req.body.description
+    console.log('update:'+data)
+     db.query(`UPDATE portfolio_item SET title=?, description=? WHERE id=?`,[title,description,data])
+    res.redirect('/')
+})
+
 app.post('/create',function(req,res){
         res.render('create.ejs',{})
 })
+
 app.post('/create_process',function(req,res){
     var title=req.body.title
     var description=req.body.description
