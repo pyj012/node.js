@@ -1,7 +1,6 @@
 var express=require('express')
 var app=express()
 var port=3000
-var url = require('url');
 var mysql = require('mysql')
 
 var db = mysql.createConnection({
@@ -54,10 +53,12 @@ app.get('/',function(req,res){
                                     <i class="fas fa-times fa-fw"></i>
                                     닫기
                                 </button>
-                                <button class="btn btn-primary">
-                                <i class="fas fa-times fa-fw"></i>
-                                <a class="nofont" href="/update?id=${n}">수정하기</a>
-                                </button>
+                                <a class="nofont" href="/update?id=${n}"> 
+                                    <button class="btn btn-primary">
+                                    <i class="fas fa-times fa-fw"></i>
+                                    수정하기
+                                    </button>
+                                </a>
                                     </div>
                                 </div>
                             </div>
@@ -93,8 +94,6 @@ app.get('/',function(req,res){
 })
 
 app.get('/update',function(req,res){
-    // var _url = url.parse(req.url, true)
-    // var queryData =_url.query
     var title =''
     var description = ''
     var id=req.query.id
