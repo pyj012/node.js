@@ -59,6 +59,12 @@ app.get('/',function(req,res){
                                     수정하기
                                     </button>
                                 </a>
+                                <a class="nofont" href="/delete?id=${n}"> 
+                                    <button class="btn btn-primary">
+                                    <i class="fas fa-times fa-fw"></i>
+                                    삭제하기
+                                    </button>
+                                </a>
                                     </div>
                                 </div>
                             </div>
@@ -133,6 +139,12 @@ app.post('/create_process',function(req,res){
      VALUES(?, ?)`,[title,description])
      res.redirect('/')
 })
+app.get('/delete',function(req,res){
+    var id=req.query.id
+    db.query('DELETE FROM portfolio_item WHERE id=?',[id],function(err, result, fields){
+        res.redirect('/')
+    })
+ })
 
 app.listen(port)
 console.log('server start : 3000')
