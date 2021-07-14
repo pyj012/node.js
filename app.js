@@ -21,14 +21,15 @@ app.get('/',function(req,res){
         var title=`박영준의 포트폴리오`
         var head1='환영합니다'
         var head2='포기하지 않기 - 매우놀라운 - 노력하는'
-        
-        console.log('portfolio_item.length'+ portfolio_item.length)
+      
         var list =''
         var i = 0
         var portfolio=''
-        var n = 1
+        
+       
         while(i < portfolio_item.length)
         {
+        var n = portfolio_item[i].id
         list = list + `<div class="portfolio-modal modal fade" id="portfolioModal${portfolio_item[i].id}" tabindex="-1" aria-labelledby="portfolioModal1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -82,12 +83,11 @@ app.get('/',function(req,res){
                 </div>
             </div>
         `
-        console.log('portfoliomodal : '+portfolio_item[i].id)
-        console.log('portfolio_item'+i+'.id = '+ portfolio_item[i].id)
-        console.log('portfolio_item'+i+'.title = '+ portfolio_item[i].title)
-        console.log('portfolio_item'+i+'.description = '+portfolio_item[i].description)
+        console.log('id : '+n)
         i=i+1
-        n=n+1       
+        
+       
+        
         }
         res.render('index.ejs',{
             list:list,
@@ -129,14 +129,22 @@ app.post('/update_process',function(req,res){
 })
 
 app.post('/create',function(req,res){
-        res.render('create.ejs',{})
+    db.query(`SELECT * FROM portfolio_item`,function(err,req){
+        var id=req.length+1
+        console.log(id)
+        res.render('create.ejs',{
+            id:id
+        })
+    })
+
 })
 
 app.post('/create_process',function(req,res){
+    var id=req.body.id
     var title=req.body.title
     var description=req.body.description
-     db.query(`INSERT INTO portfolio_item (title, description) 
-     VALUES(?, ?)`,[title,description])
+     db.query(`INSERT INTO portfolio_item (id, title, description) 
+     VALUES(?, ?, ?)`,[id,title,description])
      res.redirect('/')
 })
 app.get('/delete',function(req,res){
