@@ -3,14 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/styles.css" rel="stylesheet" />
     <title>글쓰기</title>
 </head>
-<body>
-    <form action="/create_process" method="post">
-        <p><input type="hidden" name = "id" value = <%=id%>></p>
-        <p><input type="text" name="title" placeholder="title"></p>
-        <p><textarea name="description" placeholder="description"></textarea></p>
-        <p><input type="submit"></p>
+<body class="create">
+<div>
+    <form  class="create-center"action="/create_process" method="post">
+            <p><input type="hidden" name = "id" value = <%=id%>></p>
+            <p><input class="title-size" type="text" name="title" placeholder=" title" required autofocus></p>
+            <p><textarea class="textarea-size" name="description" placeholder=" description"></textarea></p>
+            <p><form method="post" enctype="multipart/form-data">
+                <div class="sub-button">
+                    <label for="chooseFile">
+                        UPLOAD
+                    </label>
+                </div>
+                <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+            </form><p>
+            <p><input class="sub-button" type="submit"></p>
     </form>
+</div>
 </body>
 </html>
+

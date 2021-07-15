@@ -67,6 +67,36 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+.create {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  background: #1abc9c;
+}
+.create-center{
+  width:50vh;
+ border:solid #fff;
+ border-radius: 10px;
+ background-color: #fff;
+}
+.title-size{
+  border:solid 1px;
+  border-radius: 10px;
+  width:49vh;
+  height: 3vh;
+ }
+ .textarea-size{
+  border-radius: 10px;
+  border:solid 1px;
+  width:49vh;
+  height: 10vh;
+ }
+ .sub-button{
+  border-radius: 10px;
+   width:5vh;
+   margin-left:88.8%;
+   border:solid 1px;
+ }
 
 hr {
   margin: 1rem 0;
@@ -11006,6 +11036,7 @@ html {
 }
 .masthead .masthead-avatar {
   width: 15rem;
+  border-radius: 140px;
 }
 
 @media (min-width: 992px) {
