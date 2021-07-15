@@ -135,20 +135,9 @@ app.post('/create',function(req,res){
         var newImage=document.createElement("img")
         newImage.setAttribute("class",'img')
         newImage.src=URL.createObjectURL(file);
-        newImage.style.width="70%"
-        newImage.style.height="70%"
-        newImage.style.visibility="hidden%"
-        newImage.style.objectFit="contain"
-        var container=document.getElementById('image-show')
-        container.appendChild(newImage)
     }
     
-    function showImage(){
-        var newImage=document.getElementById('image-show').lastElementChild
-        newImage.style.visibility="visible"
-        document.getElementById('image-upload').style.visibility='hidden'
-        document.getElementById('fileName').textContent=null
-    }
+   
     db.query(`SELECT * FROM portfolio_item`,function(err,req){
         var id=req.length+1
         console.log(id)
