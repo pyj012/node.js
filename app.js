@@ -129,7 +129,7 @@ app.post('/update_process',function(req,res){
 })
 
 app.post('/create',function(req,res){
-    /*function loadFile(input){
+    function loadFile(input){
         var file=input.files[0]
         var name=document.getElementById('fileName')
         var newImage=document.createElement("img")
@@ -142,14 +142,13 @@ app.post('/create',function(req,res){
         var container=document.getElementById('image-show')
         container.appendChild(newImage)
     }
-    var submit=document.getElementById('submitButton')
-    submit.onclick=showImage;
+    
     function showImage(){
         var newImage=document.getElementById('image-show').lastElementChild
         newImage.style.visibility="visible"
         document.getElementById('image-upload').style.visibility='hidden'
         document.getElementById('fileName').textContent=null
-    }*/
+    }
     db.query(`SELECT * FROM portfolio_item`,function(err,req){
         var id=req.length+1
         console.log(id)

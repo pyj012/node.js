@@ -12,17 +12,33 @@
             <p><input type="hidden" name = "id" value = <%=id%>></p>
             <p><input class="title-size" type="text" name="title" placeholder=" title" required autofocus></p>
             <p><textarea class="textarea-size" name="description" placeholder=" description"></textarea></p>
-            <p><form method="post" enctype="multipart/form-data">
-                <div class="sub-button">
-                    <label for="chooseFile">
-                        UPLOAD
-                    </label>
+            <div class="container-1">
+                <div class="image-upload-1" id="image-upload">
+        
+                    <form method="post" enctype="multipart/form-data">
+                        
+                        <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+                    </form>
+        
+                    <div class="fileContainer-1">
+                        <div class="fileInput-1">
+                            FILE NAME: 
+                            <p id="fileName"></p>
+                        </div>
+                        <div class="buttonContainer-1">
+                            <div class="submitButton-1" id="submitButton">SUBMIT</div>
+                        </div>
+                    </div>
                 </div>
-                <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
-            </form><p>
+                
+                <div class="image-show-1" id="image-show"></div>
+            </div>
+        
+            <script src="app.js"></script>
             <p><input class="sub-button" type="submit"></p>
     </form>
 </div>
+
 </body>
 </html>
 
