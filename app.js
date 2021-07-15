@@ -1,4 +1,6 @@
 var express=require('express')
+var multer=require('multer')
+var upload=multer({dest:'/uproad'})
 var app=express()
 var port=3000
 var mysql = require('mysql')
@@ -15,6 +17,8 @@ app.set('views',__dirname+'/views')
 app.use(express.static(__dirname+'/public'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+app.use('/image',express.static('/upload'))
+
 
 app.get('/',function(req,res){
     db.query(`SELECT * FROM portfolio_item`, function(error,portfolio_item){
@@ -129,13 +133,13 @@ app.post('/update_process',function(req,res){
 })
 
 app.post('/create',function(req,res){
-    function loadFile(input){
+    /*function loadFile(input){
         var file=input.files[0]
         var name=document.getElementById('fileName')
         var newImage=document.createElement("img")
         newImage.setAttribute("class",'img')
         newImage.src=URL.createObjectURL(file);
-    }
+    }*/
     
    
     db.query(`SELECT * FROM portfolio_item`,function(err,req){
