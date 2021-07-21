@@ -3,6 +3,17 @@ var app=express()
 var fs=require('fs')
 var port=3000
 var mysql = require('mysql')
+var multer = require('multer');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/') // cb 콜백함수를 통해 전송된 파일 저장 디렉토리 설정
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname) // cb 콜백함수를 통해 전송된 파일 이름 설정
+    }
+  })
+  var upload = multer({ storage: storage })
+  app.use('/users', express.static('uploads'));
 
 var db = mysql.createConnection({
   host:'localhost',
@@ -148,16 +159,13 @@ app.post('/create',function(req,res){
 
 })
 
-app.post('/create_process',function(req,res){
+app.post('/create_process',upload.single('avatar'),function(req,res){
     var id=req.body.id
     var title=req.body.title
     var description=req.body.description
-    var file=req.file.avatar
+    
 
-    fs.readFile(file,function(err,data){
-        fs.writeFileSync(file,data)
-    })
-
+   
 
 
      db.query(`INSERT INTO portfolio_item (id, title, description) 

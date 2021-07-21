@@ -8,7 +8,7 @@
 </head>
 <body class="create">
 <div>
-    <form  class="create-center"action="/create_process" method="post">
+    <form  class="create-center"action="/create_process" method="post"enctype="multipart/form-data">
             <p><input type="hidden" name = "id" value = <%=id%>></p>
             <p><input class="title-size" type="text" name="title" placeholder=" title" required autofocus></p>
             <p><textarea class="textarea-size" name="description" placeholder=" description"></textarea></p>
