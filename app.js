@@ -1,7 +1,6 @@
 var express=require('express')
-var multer=require('multer')
-var upload=multer({dest:'/uproad'})
 var app=express()
+var fs=require('fs')
 var port=3000
 var mysql = require('mysql')
 
@@ -17,7 +16,12 @@ app.set('views',__dirname+'/views')
 app.use(express.static(__dirname+'/public'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-app.use('/image',express.static('/upload'))
+
+app.get('/upload',function(req,res){
+    var dir='./uploadedFiles'
+    if(!fs.existsSync(dir)) fs.mkdirSync(dir)
+})
+
 
 
 app.get('/',function(req,res){
@@ -133,14 +137,6 @@ app.post('/update_process',function(req,res){
 })
 
 app.post('/create',function(req,res){
-    /*function loadFile(input){
-        var file=input.files[0]
-        var name=document.getElementById('fileName')
-        var newImage=document.createElement("img")
-        newImage.setAttribute("class",'img')
-        newImage.src=URL.createObjectURL(file);
-    }*/
-    
    
     db.query(`SELECT * FROM portfolio_item`,function(err,req){
         var id=req.length+1
@@ -156,6 +152,14 @@ app.post('/create_process',function(req,res){
     var id=req.body.id
     var title=req.body.title
     var description=req.body.description
+    var file=req.file.avatar
+
+    fs.readFile(file,function(err,data){
+        fs.writeFileSync(file,data)
+    })
+
+
+
      db.query(`INSERT INTO portfolio_item (id, title, description) 
      VALUES(?, ?, ?)`,[id,title,description])
      res.redirect('/')
@@ -166,6 +170,9 @@ app.get('/delete',function(req,res){
         res.redirect('/')
     })
  })
+
+ 
+
 
 app.listen(port)
 console.log('server start : 3000')
